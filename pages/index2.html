@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÉLÏORA - panier</title>
+    <link rel="stylesheet" href="lib/style.css">
+    <link rel="icon" type="image/png" href="lib/favicon.png">
+</head>
+<body>
+
+    <nav>
+        <a href="../index.html" class="navimage"><img src="lib/favicon.png" style="filter: brightness(0);"></a>
+        <a href="presentation.html">Présentation</a>
+        <a href="concept.html">Concept</a>
+        <a href="objectif.html">Objectif</a>
+        <a href="cibletypes.html">Cible et types</a>
+        <a href="composants.html">Composants</a>
+        <a href="guidlines.html">Guidelines</a>
+        <a href="shop.html">Shop</a>
+        <a href="utilisation.html">Utilisation</a>
+        <a href="index.html"><img src="lib/loupe.png"></a>
+        <a href="index2.html"><img src="lib/panier.png"></a>
+    </nav>
+
+    <main class="purchase-container">
+        
+        <section class="product-gallery">
+            <div class="main-image">
+                <img src="lib/serumpack.png" alt="Sérum L'Élixir">
+            </div>
+        </section>
+
+        <section class="configurator">
+            <h1 class="section-title">L'Élixir Morphose</h1>
+
+            <div class="option-group">
+                <span class="option-label">Finition du flacon</span>
+                <div class="texture-selector">
+                    <button class="texture-btn active">Verre Sablé</button>
+                    <button class="texture-btn">Verre Givré</button>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <span class="option-label">Sélectionnez vos formats</span>
+                <div class="selection-grid">
+                    
+                    <div class="selection-card" data-price="149.99">
+                        <div class="card-info">
+                            <span class="card-title">Flacon 50 ml</span>
+                            <span class="card-subtitle">Format voyage et découverte.</span>
+                        </div>
+                        <div class="card-action-group" style="text-align: right;">
+                            <div class="card-price">149,99 €</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn minus">-</button>
+                                <input type="number" class="qty-input" value="0" min="0" readonly>
+                                <button class="qty-btn plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="selection-card" data-price="289.99">
+                        <div class="card-info">
+                            <span class="card-title">Flacon 100 ml</span>
+                            <span class="card-subtitle">Cure complète haute efficacité.</span>
+                        </div>
+                        <div class="card-action-group" style="text-align: right;">
+                            <div class="card-price">289,99 €</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn minus">-</button>
+                                <input type="number" class="qty-input" value="0" min="0" readonly>
+                                <button class="qty-btn plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="selection-card" data-price="119.99">
+                        <div class="card-info">
+                            <span class="card-title">Éco-Recharge 50 ml</span>
+                            <span class="card-subtitle">L'élégance responsable.</span>
+                        </div>
+                        <div class="card-action-group" style="text-align: right;">
+                            <div class="card-price">119,99 €</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn minus">-</button>
+                                <input type="number" class="qty-input" value="0" min="0" readonly>
+                                <button class="qty-btn plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-total">
+                    <span style="font-size: 14px; font-weight: 400; color: var(--gray-text);">Total</span>
+                    <span id="display-total">0,00 €</span>
+                </div>
+                <div style="font-size: 13px; color: var(--gray-text); margin-bottom: 20px;">
+                    <p>✓ Livraison express offerte</p>
+                    <p>✓ Paiement sécurisé</p>
+                </div>
+                <button class="btn-add">Ajouter au panier</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Expertise Mélïora — Besoin d'un conseil ? <a href="#" style="color: var(--selection-blue); text-decoration: underline;">Contactez-nous</a></p>
+    </footer>
+
+    <script>
+        const cards = document.querySelectorAll('.selection-card');
+        const totalDisplay = document.getElementById('display-total');
+        const textureBtns = document.querySelectorAll('.texture-btn');
+
+        function calculateTotal() {
+            let total = 0;
+            cards.forEach(card => {
+                const price = parseFloat(card.getAttribute('data-price'));
+                const qty = parseInt(card.querySelector('.qty-input').value);
+                
+                if (qty > 0) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+                total += price * qty;
+            });
+            totalDisplay.innerText = total.toLocaleString('fr-FR', { minimumFractionDigits: 2 }) + " €";
+        }
+
+        cards.forEach(card => {
+            const btnPlus = card.querySelector('.plus');
+            const btnMinus = card.querySelector('.minus');
+            const input = card.querySelector('.qty-input');
+
+            btnPlus.addEventListener('click', () => {
+                input.value = parseInt(input.value) + 1;
+                calculateTotal();
+            });
+
+            btnMinus.addEventListener('click', () => {
+                if (parseInt(input.value) > 0) {
+                    input.value = parseInt(input.value) - 1;
+                    calculateTotal();
+                }
+            });
+        });
+
+        textureBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                textureBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        calculateTotal();
+    </script>
+</body>
+</html>
